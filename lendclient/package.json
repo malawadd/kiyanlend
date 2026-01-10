@@ -1,0 +1,45 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm-run-all --parallel dev:frontend dev:backend",
+    "dev:frontend": "next dev",
+    "dev:backend": "convex dev",
+    "predev": "convex dev --until-success && convex dashboard",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@clerk/clerk-react": "^5.25.0",
+    "@clerk/nextjs": "^6.12.6",
+    "@human.tech/passport-embed": "^0.2.2",
+    "@nillion/blindfold": "^0.1.0",
+    "@nillion/nilai-ts": "^0.2.0",
+    "@nillion/nuc": "^0.1.1",
+    "@nillion/secretvaults": "^0.1.6",
+    "@rainbow-me/rainbowkit": "^2.2.8",
+    "@tanstack/react-query": "^5.90.3",
+    "convex": "^1.23.0",
+    "next": "15.2.8",
+    "openai": "^6.3.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "viem": "2.x",
+    "wagmi": "^2.18.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.2.3",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.5.3",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
