@@ -402,7 +402,7 @@ export function UploadPanel() {
       <div className="mt-6 p-4 bg-accent bg-opacity-30 border-4 border-foreground">
         <p className="text-sm font-bold flex items-start gap-2">
           <span>🔐</span>
-          <span>Enhanced Security: Documents analyzed by AI, then encrypted in your personal SecretVault using Nillions Private Storage. Only you can decrypt and access raw documents. Lenders see AI summaries only.</span>
+          <span>Enhanced Security: Documents analyzed by AI, then encrypted in your personal SecretVault using Kiyans Private Storage. Only you can decrypt and access raw documents. Lenders see AI summaries only.</span>
         </p>
       </div>
     </NeoCard>

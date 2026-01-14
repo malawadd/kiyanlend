@@ -21,7 +21,7 @@ export default function HelpPage() {
     },
     {
       question: 'How does my data stay private?',
-      answer: 'All your financial documents are stored in your personal SecretVault using end-to-end encryption. When a lender requests an assessment, a pre-trained nilAI model runs on your encrypted data using secure multi-party computation. The model never decrypts your files and only outputs a Trust Score (1-100) and a short Risk Assessment summary.',
+      answer: 'All your financial documents are stored in your personal SecretVault using end-to-end encryption. When a lender requests an assessment, a pre-trained KiyanAI model runs on your encrypted data using secure multi-party computation. The model never decrypts your files and only outputs a Trust Score (1-100) and a short Risk Assessment summary.',
       category: 'privacy',
     },
     {
@@ -51,7 +51,7 @@ export default function HelpPage() {
     },
     {
       question: 'What is a Trust Score?',
-      answer: 'A Trust Score is a number from 1 to 100 that represents your creditworthiness based on AI analysis of your encrypted financial data. It\'s computed by pre-trained nilAI models that analyze payment history, income patterns, debt ratios, and savings behavior—all without decrypting your files.',
+      answer: 'A Trust Score is a number from 1 to 100 that represents your creditworthiness based on AI analysis of your encrypted financial data. It\'s computed by pre-trained KiyanAI models that analyze payment history, income patterns, debt ratios, and savings behavior—all without decrypting your files.',
       category: 'borrower',
     },
     {
@@ -75,13 +75,13 @@ export default function HelpPage() {
       category: 'lender',
     },
     {
-      question: 'What is nilAI?',
-      answer: 'nilAI is the encrypted AI framework that powers our Trust Score assessments. It uses secure multi-party computation to run machine learning models on encrypted data. The model processes your financial information without ever decrypting it, ensuring complete privacy.',
+      question: 'What is KiyanAI?',
+      answer: 'KiyanAI is the encrypted AI framework that powers our Trust Score assessments. It uses secure multi-party computation to run machine learning models on encrypted data. The model processes your financial information without ever decrypting it, ensuring complete privacy.',
       category: 'technical',
     },
     {
       question: 'What is a SecretVault?',
-      answer: 'SecretVault is your personal encrypted storage for financial documents. Files uploaded to your SecretVault are encrypted end-to-end and can only be processed by authorized nilAI models. No human—including lenders and platform admins—can view your raw files.',
+      answer: 'SecretVault is your personal encrypted storage for financial documents. Files uploaded to your SecretVault are encrypted end-to-end and can only be processed by authorized KiyanAI models. No human—including lenders and platform admins—can view your raw files.',
       category: 'technical',
     },
     {

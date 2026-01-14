@@ -216,7 +216,7 @@ export default function ProfilePage() {
                   <div className="flex-1">
                     <p className="font-black mb-2">Your SecretVault</p>
                     <p className="text-sm font-semibold mb-3">
-                      All your financial documents are encrypted and stored in your personal SecretVault. Only nilAI models can process them through secure computation.
+                      All your financial documents are encrypted and stored in your personal SecretVault. Only KiyanAI models can process them through secure computation.
                     </p>
                     <p className="text-xs font-bold text-gray-600">
                       Lenders never see raw documents • Only Trust Scores are shared
@@ -262,7 +262,7 @@ export default function ProfilePage() {
           </NeoCard>
 
           <NeoCard bg="bg-white">
-            <h3 className="text-2xl font-black uppercase mb-6">How nilAI Works</h3>
+            <h3 className="text-2xl font-black uppercase mb-6">How KiyanAI Works</h3>
             <div className="space-y-4">
               <div className="p-4 border-4 border-foreground">
                 <h4 className="font-black mb-2 flex items-center gap-2">
@@ -280,7 +280,7 @@ export default function ProfilePage() {
                   <span>How is it computed?</span>
                 </h4>
                 <p className="text-sm font-semibold text-gray-600">
-                  Pre-trained nilAI models run on your encrypted data using secure multi-party computation. The model analyzes payment history, income patterns, debt ratios, and savings behavior without ever decrypting your files.
+                  Pre-trained KiyanAI models run on your encrypted data using secure multi-party computation. The model analyzes payment history, income patterns, debt ratios, and savings behavior without ever decrypting your files.
                 </p>
               </div>
 
