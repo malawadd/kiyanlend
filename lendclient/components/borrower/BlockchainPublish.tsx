@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { parseEther } from 'viem';
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { NeoButton } from '../ui/NeoButton';
 import { useToast } from '../ui/NeoToast';
 import { CONTRACT_ADDRESS, usdToEth, formatUsdAmount } from '@/lib/blockchain-utils';
@@ -48,14 +49,7 @@ export function BlockchainPublish({ loanRequest, onSuccess }: BlockchainPublishP
     }
   }, [hash, isConfirming, isConfirmed, showToast]);
 
-  useEffect(() => {
-    if (isConfirmed && receipt && hash) {
-      setTxStep('confirmed');
-      handleTransactionConfirmed(hash);
-    }
-  }, [isConfirmed, receipt, hash]);
-
-  const handleTransactionConfirmed = async (txHash: string) => {
+  const handleTransactionConfirmed = useCallback(async (txHash: string) => {
     try {
       // Update backend with confirmed transaction
       await updateLoanRequest({
@@ -80,7 +74,14 @@ export function BlockchainPublish({ loanRequest, onSuccess }: BlockchainPublishP
       setIsPublishing(false);
       setTxStep('idle');
     }
-  };
+  }, [updateLoanRequest, loanRequest.shortId, showToast, onSuccess]);
+
+  useEffect(() => {
+    if (isConfirmed && receipt && hash) {
+      setTxStep('confirmed');
+      handleTransactionConfirmed(hash);
+    }
+  }, [isConfirmed, receipt, hash, handleTransactionConfirmed]);
 
   const handlePublishToBlockchain = async () => {
     if (!isConnected || !address) {
@@ -163,20 +164,136 @@ export function BlockchainPublish({ loanRequest, onSuccess }: BlockchainPublishP
       )}
 
       {!isOnChain ? (
-        <NeoButton
-          variant="primary"
-          onClick={handlePublishToBlockchain}
-          disabled={isLoading || !isConnected}
-        >
-          {isLoading ? (
-            <>
-              <span className="animate-spin mr-2">⏳</span>
-              {getButtonText()}
-            </>
-          ) : (
-            getButtonText()
-          )}
-        </NeoButton>
+        <div className="space-y-3">
+          {!isConnected ? (
+            <div className="p-3 bg-orange-50 border-2 border-orange-400 rounded">
+              <p className="text-xs font-bold text-orange-800 mb-2">
+                🔌 Wallet Required
+              </p>
+              <p className="text-xs text-orange-700 mb-3">
+                Connect your wallet to publish this loan request to the blockchain marketplace.
+              </p>
+              <ConnectButton.Custom>
+                {({
+                  account,
+                  chain,
+                  openAccountModal,
+                  openChainModal,
+                  openConnectModal,
+                  authenticationStatus,
+                  mounted,
+                }) => {
+                  const ready = mounted && authenticationStatus !== 'loading';
+                  const connected =
+                    ready &&
+                    account &&
+                    chain &&
+                    (!authenticationStatus ||
+                      authenticationStatus === 'authenticated');
+
+                  return (
+                    <div
+                      {...(!ready && {
+                        'aria-hidden': true,
+                        'style': {
+                          opacity: 0,
+                          pointerEvents: 'none',
+                          userSelect: 'none',
+                        },
+                      })}
+                    >
+                      {(() => {
+                        if (!connected) {
+                          return (
+                            <NeoButton
+                              size="sm"
+                              variant="secondary"
+                              onClick={openConnectModal}
+                            >
+                              🔌 Connect Wallet
+                            </NeoButton>
+                          );
+                        }
+
+                        if (chain.unsupported) {
+                          return (
+                            <NeoButton
+                              size="sm"
+                              variant="danger"
+                              onClick={openChainModal}
+                            >
+                              Wrong network
+                            </NeoButton>
+                          );
+                        }
+
+                        return (
+                          <div className="flex gap-2">
+                            <NeoButton
+                              size="sm"
+                              variant="accent"
+                              onClick={openChainModal}
+                            >
+                              {chain.hasIcon && (
+                                <div
+                                  style={{
+                                    background: chain.iconBackground,
+                                    width: 12,
+                                    height: 12,
+                                    borderRadius: 999,
+                                    overflow: 'hidden',
+                                    marginRight: 4,
+                                  }}
+                                >
+                                  {chain.iconUrl && (
+                                    <img
+                                      alt={chain.name ?? 'Chain icon'}
+                                      src={chain.iconUrl}
+                                      style={{ width: 12, height: 12 }}
+                                    />
+                                  )}
+                                </div>
+                              )}
+                              {chain.name}
+                            </NeoButton>
+
+                            <NeoButton
+                              size="sm"
+                              variant="primary"
+                              onClick={openAccountModal}
+                            >
+                              {account.displayName}
+                              {account.displayBalance
+                                ? ` (${account.displayBalance})`
+                                : ''}
+                            </NeoButton>
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  );
+                }}
+              </ConnectButton.Custom>
+            </div>
+          ) : null}
+          
+          <NeoButton
+            variant="primary"
+            onClick={handlePublishToBlockchain}
+            disabled={isLoading || !isConnected}
+          >
+            {isLoading ? (
+              <>
+                <span className="animate-spin mr-2">⏳</span>
+                {getButtonText()}
+              </>
+            ) : !isConnected ? (
+              '🔌 Connect Wallet to Publish'
+            ) : (
+              getButtonText()
+            )}
+          </NeoButton>
+        </div>
       ) : (
         <div className="text-xs text-green-600 ">
           ✅ Published on Sepolia blockchain (2+ confirmations)
