@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { formatEther } from 'viem';
 import { useMutation } from 'convex/react';
@@ -41,6 +41,28 @@ export function FundProposal({ loanRequest, onSuccess }: FundProposalProps) {
     hash,
     confirmations: 2,
   });
+
+  // Memoize the funding confirmation handler
+  const handleFundingConfirmed = useCallback(async (txHash: string) => {
+    try {
+      await updateLoanRequest({
+        shortId: loanRequest.shortId,
+        isFunded: true,
+        fundedBy: address!,
+        fundingTxHash: txHash,
+        status: 'funded',
+      });
+
+      showToast(`✅ Funding confirmed! You've successfully funded ${loanRequest.borrowerName}'s proposal.`, 'success');
+      setTxStep('idle');
+      onSuccess?.();
+    } catch (error) {
+      console.error('Backend update error:', error);
+      showToast('Failed to update funding status', 'danger');
+      setTxStep('failed');
+      setTimeout(() => setTxStep('idle'), 3000);
+    }
+  }, [address, loanRequest.shortId, loanRequest.borrowerName, onSuccess, showToast, updateLoanRequest]);
 
   // Reset transaction state when component mounts or loan request changes
   useEffect(() => {
@@ -92,28 +114,7 @@ export function FundProposal({ loanRequest, onSuccess }: FundProposalProps) {
       setTxStep('confirmed');
       handleFundingConfirmed(hash);
     }
-  }, [isConfirmed, hash, txStep]);
-
-  const handleFundingConfirmed = async (txHash: string) => {
-    try {
-      await updateLoanRequest({
-        shortId: loanRequest.shortId,
-        isFunded: true,
-        fundedBy: address!,
-        fundingTxHash: txHash,
-        status: 'funded',
-      });
-
-      showToast(`✅ Funding confirmed! You've successfully funded ${loanRequest.borrowerName}'s proposal.`, 'success');
-      setTxStep('idle');
-      onSuccess?.();
-    } catch (error) {
-      console.error('Backend update error:', error);
-      showToast('Failed to update funding status', 'danger');
-      setTxStep('failed');
-      setTimeout(() => setTxStep('idle'), 3000);
-    }
-  };
+  }, [isConfirmed, hash, txStep, handleFundingConfirmed]);
 
   const handleFundProposal = async () => {
     if (!isConnected || !proposal || !address) return;

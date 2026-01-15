@@ -1,10 +1,10 @@
 import { createPublicClient, http, decodeEventLog } from 'viem';
-import { sepolia } from 'viem/chains';
+import {  mantleSepoliaTestnet } from 'viem/chains';
 import { CONTRACT_ADDRESS } from './blockchain-utils';
 import contractABI from './abi.json';
 
 const publicClient = createPublicClient({
-  chain: sepolia,
+  chain: mantleSepoliaTestnet, 
   transport: http()
 });
 
