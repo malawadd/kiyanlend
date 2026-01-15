@@ -2,12 +2,12 @@
 
 import '@rainbow-me/rainbowkit/styles.css';
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
-import { sepolia } from 'wagmi/chains';
+import {  mantleSepoliaTestnet } from 'wagmi/chains';
 
 export const config = getDefaultConfig({
   appName: 'KiyanLend',
   projectId: 'YOUR_PROJECT_ID', // Get this from WalletConnect Cloud
-  chains: [sepolia], // Start with mainnet
+  chains: [mantleSepoliaTestnet], // Start with mainnet
   multiInjectedProviderDiscovery: true,
   ssr: true,
 });
